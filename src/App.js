@@ -28,27 +28,29 @@ function App() {
 			count = 1,
 			middleItem = Math.ceil(parseInt(input) / 2);
 		for (let index = 1; index < parseInt(input) + 1; index++) {
+			let firstCount = input - count * 2,
+				repeatCount = firstCount - (count - 1) * 2;
 			if (index < middleItem) {
 				if (index % 2 !== 0) {
 					if (index > 1) {
-						output += `${"@ ".repeat(count)}${"@".repeat(input - count * 2 - (count - 1) * 2 < 0 ? 0 : input - count * 2 - (count - 1) * 2)}${" @".repeat(count - 1)}\n`;
+						output += `${"@ ".repeat(count)}${"@".repeat(repeatCount < 0 ? 0 : repeatCount)}${" @".repeat(count - 1)}\n`;
 					} else {
-						output += `${"@ ".repeat(count)}${"@".repeat(input - count * 2)}\n`;
+						output += `${"@ ".repeat(count)}${"@".repeat(firstCount)}\n`;
 					}
 					count++;
 				} else {
-					output += `${"@ ".repeat(input - count * 2 - (count - 1) * 2 < 0 ? count - 1 : count)}${" ".repeat(input - count * 2 - (count - 1) * 2 < 0 ? 1 : input - count * 2 - (count - 1) * 2)}${" @".repeat(count - 1)}\n`;
+					output += `${"@ ".repeat(repeatCount < 0 ? count - 1 : count)}${" ".repeat(repeatCount < 0 ? 1 : repeatCount)}${" @".repeat(count - 1)}\n`;
 				}
 			} else if (index > middleItem) {
 				if (index % 2 !== 0) {
 					count--;
 					if (index < parseInt(input - 1)) {
-						output += `${"@ ".repeat(count - 1)}${"@".repeat(input - count * 2 - (count - 1) * 2 < 0 ? 0 : input - count * 2 - (count - 1) * 2)}${" @".repeat(count)}\n`;
+						output += `${"@ ".repeat(count - 1)}${"@".repeat(repeatCount < 0 ? 0 : repeatCount)}${" @".repeat(count)}\n`;
 					} else {
-						output += `${"@".repeat(input - count * 2)}${" @".repeat(count)}\n`;
+						output += `${"@".repeat(firstCount)}${" @".repeat(count)}\n`;
 					}
 				} else {
-					output += `${"@ ".repeat(count - 1)}${" ".repeat(input - count * 2 - (count - 1) * 2 < 0 ? 1 : input - count * 2 - (count - 1) * 2)}${" @".repeat(input - count * 2 - (count - 1) * 2 < 0 ? count - 1 : count)}\n`;
+					output += `${"@ ".repeat(count - 1)}${" ".repeat(repeatCount < 0 ? 1 : repeatCount)}${" @".repeat(repeatCount < 0 ? count - 1 : count)}\n`;
 				}
 			} else {
 				output += `${"@ ".repeat(middleItem)}\n`;
