@@ -5,11 +5,11 @@ function App() {
 	const initialState = {
 		input: "",
 		output: "",
-		selectedHaze: true,
+		selectedMaze: true,
 	};
 	const [state, setState] = useState(initialState);
 
-	const builtHaze1 = (input) => {
+	const builtMaze1 = (input) => {
 		let output = ``,
 			count = 1;
 		for (let index = 1; index < parseInt(input) + 1; index++) {
@@ -23,7 +23,7 @@ function App() {
 		return output;
 	};
 
-	const builtHaze2 = (input) => {
+	const builtMaze2 = (input) => {
 		let output = ``,
 			count = 1,
 			middleItem = Math.ceil(parseInt(input) / 2);
@@ -57,16 +57,16 @@ function App() {
 		return output;
 	};
 
-	const makeHaze = (e) => {
+	const makeMaze = (e) => {
 		e.preventDefault();
 		if (parseInt(state.input) < 3 || parseInt(state.input) % 2 === 0) {
 			return setState((prev) => ({ ...prev, output: "Wrong Input Dude!", input: "" }));
 		} else {
 			let output;
-			if (state.selectedHaze) {
-				output = builtHaze1(state.input);
+			if (state.selectedMaze) {
+				output = builtMaze1(state.input);
 			} else {
-				output = builtHaze2(state.input);
+				output = builtMaze2(state.input);
 			}
 			setState((prev) => ({ ...prev, output, input: "" }));
 		}
@@ -96,18 +96,18 @@ function App() {
 				<tbody>
 					<tr>
 						<td>
-							<input type="radio" name="haze1" value={true} checked={state.selectedHaze} onChange={() => setState((prev) => ({ ...prev, selectedHaze: true }))} />
-							Haze 1
+							<input type="radio" name="maze1" value={true} checked={state.selectedMaze} onChange={() => setState((prev) => ({ ...prev, selectedMaze: true }))} />
+							Maze 1
 						</td>
 						<td>
-							<input type="radio" name="haze2" value={false} checked={!state.selectedHaze} onChange={() => setState((prev) => ({ ...prev, selectedHaze: false }))} />
-							Haze 2
+							<input type="radio" name="maze2" value={false} checked={!state.selectedMaze} onChange={() => setState((prev) => ({ ...prev, selectedMaze: false }))} />
+							Maze 2
 						</td>
 					</tr>
 				</tbody>
 			</table>
 			<br />
-			<button onClick={makeHaze}>Buat</button>
+			<button onClick={makeMaze}>Buat</button>
 			<br />
 			<br />
 			<textarea style={{ fontSize: "25px" }} name="output" id="output" cols="90" rows="10" value={state.output} />
