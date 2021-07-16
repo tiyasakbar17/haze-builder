@@ -4,7 +4,8 @@ import "./App.css";
 function App() {
 	const initialState = {
 		input: "",
-		output: ``,
+		output: "",
+		selectedHaze: true,
 	};
 	const [state, setState] = useState(initialState);
 
@@ -22,12 +23,51 @@ function App() {
 		return output;
 	};
 
+	const builtHaze2 = (input) => {
+		let output = ``,
+			count = 1,
+			middleItem = Math.ceil(parseInt(input) / 2);
+		for (let index = 1; index < parseInt(input) + 1; index++) {
+			if (index < middleItem) {
+				if (index % 2 !== 0) {
+					if (index > 1) {
+						output += `${"@ ".repeat(count)}${"@".repeat(input - count * 2 - (count - 1) * 2 < 0 ? 0 : input - count * 2 - (count - 1) * 2)}${" @".repeat(count - 1)}\n`;
+					} else {
+						output += `${"@ ".repeat(count)}${"@".repeat(input - count * 2)}\n`;
+					}
+					count++;
+				} else {
+					output += `${"@ ".repeat(input - count * 2 - (count - 1) * 2 < 0 ? count - 1 : count)}${" ".repeat(input - count * 2 - (count - 1) * 2 < 0 ? 1 : input - count * 2 - (count - 1) * 2)}${" @".repeat(count - 1)}\n`;
+				}
+			} else if (index > middleItem) {
+				if (index % 2 !== 0) {
+					count--;
+					if (index < parseInt(input - 1)) {
+						output += `${"@ ".repeat(count - 1)}${"@".repeat(input - count * 2 - (count - 1) * 2 < 0 ? 0 : input - count * 2 - (count - 1) * 2)}${" @".repeat(count)}\n`;
+					} else {
+						output += `${"@".repeat(input - count * 2)}${" @".repeat(count)}\n`;
+					}
+				} else {
+					output += `${"@ ".repeat(count - 1)}${" ".repeat(input - count * 2 - (count - 1) * 2 < 0 ? 1 : input - count * 2 - (count - 1) * 2)}${" @".repeat(input - count * 2 - (count - 1) * 2 < 0 ? count - 1 : count)}\n`;
+				}
+			} else {
+				output += `${"@ ".repeat(middleItem)}\n`;
+			}
+		}
+		return output;
+	};
+
 	const makeHaze = (e) => {
 		e.preventDefault();
 		if (parseInt(state.input) < 3 || parseInt(state.input) % 2 === 0) {
 			return setState((prev) => ({ ...prev, output: "Wrong Input Dude!", input: "" }));
 		} else {
-			const output = builtHaze1(state.input);
+			let output;
+			if (state.selectedHaze) {
+				output = builtHaze1(state.input);
+			} else {
+				output = builtHaze2(state.input);
+			}
 			setState((prev) => ({ ...prev, output, input: "" }));
 		}
 	};
@@ -35,7 +75,7 @@ function App() {
 	return (
 		<div className="container">
 			<h1>Test</h1>
-			<h2 style={{ "text-align": "left" }}>Created By: Muhammad Tiyas Fachreza Akbar</h2>
+			<h2 style={{ textAlign: "left" }}>Created By: Muhammad Tiyas Fachreza Akbar</h2>
 			<p>
 				<strong>Buatlah sebuah function</strong> untuk meng-generate maze dengan pola-pola dengan ketentuan:
 				<ul>
@@ -52,10 +92,25 @@ function App() {
 			<br />
 			<input type="text" name="kualitas" id="kualitas" placeholder="Minimal 3" value={state.input} onChange={(e) => setState((prev) => ({ ...prev, input: e.target.value }))} />
 			<br />
+			<table>
+				<tbody>
+					<tr>
+						<td>
+							<input type="radio" name="haze1" value={true} checked={state.selectedHaze} onChange={() => setState((prev) => ({ ...prev, selectedHaze: true }))} />
+							Haze 1
+						</td>
+						<td>
+							<input type="radio" name="haze2" value={false} checked={!state.selectedHaze} onChange={() => setState((prev) => ({ ...prev, selectedHaze: false }))} />
+							Haze 2
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<br />
 			<button onClick={makeHaze}>Buat</button>
 			<br />
 			<br />
-			<textarea style={{ "font-size": "25px" }} name="output" id="output" cols="30" rows="10" value={state.output} />
+			<textarea style={{ fontSize: "25px" }} name="output" id="output" cols="90" rows="10" value={state.output} />
 			<br />
 		</div>
 	);
